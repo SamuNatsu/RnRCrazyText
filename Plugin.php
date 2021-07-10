@@ -5,7 +5,7 @@
  * 
  * @package RnRCrazyText
  * @author Rainiar
- * @version 1.1.0
+ * @version 1.1.1
  * @link https://rainiar.top
  */
 
@@ -28,7 +28,7 @@ class RnRCrazyText_Plugin implements Typecho_Plugin_Interface {
         '@([\s\S]{0,1})\[(color)=([\S]+?)\]([\s\S]*?)\[/color\]@'
     );
 
-    private static $keys = array('p-center', 'del', 'u', 'i', 'b', 'secret', 'h-center', 'h-right', 'color');
+    private static $keys = array('p-center', 'p-right', 'del', 'u', 'i', 'b', 'secret', 'h-center', 'h-right', 'color');
 
     private static $color = array(
         'white' => '#ffffff',
@@ -48,7 +48,7 @@ class RnRCrazyText_Plugin implements Typecho_Plugin_Interface {
         'teal' => '#008000',
         'silver' => '#c0c0c0'
     );
-    
+
     private static $switches = array();
 
     /**
@@ -62,7 +62,7 @@ class RnRCrazyText_Plugin implements Typecho_Plugin_Interface {
         Typecho_Plugin::factory('Widget_Abstract_Contents')->contentEx_980699401 = array('RnRCrazyText_Plugin', 'contentEx');
         Typecho_Plugin::factory('Widget_Archive')->footer_1870546171 = array('RnRCrazyText_Plugin', 'footer');
     }
-    
+
     private static function rParse($content) {
         return preg_replace_callback(
             self::$pattern,
@@ -155,9 +155,21 @@ class RnRCrazyText_Plugin implements Typecho_Plugin_Interface {
         self::$switches = array();
         return self::rParse($content);
     }
-    
+
     public static function footer() {
-        echo '<script defer>$(document).ready(function(){if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent))$("[data-secret]").click(function(){if($(this).attr("style")=="background-color:#000;color:#000")$(this).attr("style","background-color:#000;color:#fff");else $(this).attr("style","background-color:#000;color:#000");});});</script>';
+?>
+<script defer>
+    $(document).ready(function() {
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))
+            $("[data-secret]").click(function() {
+                if($(this).attr("style") == "background-color:#000;color:#000")
+                    $(this).attr("style", "background-color:#000;color:#fff");
+                else
+                    $(this).attr("style", "background-color:#000;color:#000");
+            });
+    });
+</script>
+<?php
     }
     
     /**
